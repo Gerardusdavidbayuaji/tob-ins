@@ -26,7 +26,7 @@ export const createPolisQuery = async (input: IPolisInput) => {
     ]
   );
 
-  const policy_number = `${dateFormat}-${String(insertValue.id).padStart(
+  const policy_number = `${dateFormat}${String(insertValue.id).padStart(
     6,
     "0"
   )}`;
