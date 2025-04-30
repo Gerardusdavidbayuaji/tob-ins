@@ -107,7 +107,7 @@ const Dashboard = () => {
           <AlertDialog>
             <PolicyDialog
               mode="create"
-              trigger={<Button>Create Polis</Button>}
+              trigger={<Button>Tambah Polis</Button>}
               fieldNames={fieldNames}
               formData={formData}
               onChange={handleInputChange}
