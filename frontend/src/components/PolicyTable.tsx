@@ -1,96 +1,86 @@
+import { IPolicy } from "@/utils/policy";
+
+import { Pencil, Trash } from "lucide-react";
+import PolicyDialog from "./PolicyDialog";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  AlertDialog,
+  AlertDialogDescription,
+  AlertDialogTrigger,
+  AlertDialogContent,
   AlertDialogAction,
   AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
+  AlertDialog,
 } from "@/components/ui/alert-dialog";
-import { Pencil, Trash } from "lucide-react";
-import { IPolicy } from "@/utils/policy";
-import PolicyDialog from "./PolicyDialog";
+import {
+  TableHeader,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Table,
+} from "@/components/ui/table";
 
 interface PolicyTableProps {
-  policies: IPolicy[];
-  isLoading: boolean;
-  formData: Partial<IPolicy>;
-  fieldNames: string[];
-  onEditClick: (policy: IPolicy) => void;
+  onDateChange: (field: keyof IPolicy, date: Date | undefined) => void;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onUpdate: () => void;
+  onEditClick: (policy: IPolicy) => void;
   onDelete: (id: number) => void;
   onCancelEdit: () => void;
+  onUpdate: () => void;
+  formData: Partial<IPolicy>;
   editingId: number | null;
+  fieldNames: string[];
+  policies: IPolicy[];
+  isLoading: boolean;
 }
 
-const PolicyTable = ({
-  policies,
-  isLoading,
-  formData,
-  fieldNames,
-  onEditClick,
-  onChange,
-  onUpdate,
-  onDelete,
-  onCancelEdit,
-}: PolicyTableProps) => {
+const PolicyTable = (props: PolicyTableProps) => {
+  const {
+    onCancelEdit,
+    onEditClick,
+    onChange,
+    onUpdate,
+    onDelete,
+    fieldNames,
+    isLoading,
+    formData,
+    policies,
+  } = props;
+
   return (
     <Table>
       <TableHeader>
         <TableRow className="bg-[#242322] rounded-t-md text-[#fafafa]">
-          <TableHead className="text-center w-1/7 rounded-tl-md">
-            No Polis
-          </TableHead>
-          <TableHead className="text-center w-1/7">Nama Tertanggung</TableHead>
-          <TableHead className="text-center w-1/7">Periode</TableHead>
-          <TableHead className="text-center w-1/7">Nama Item</TableHead>
-          <TableHead className="text-center w-1/7">
-            Harga Pertanggungan
-          </TableHead>
-          <TableHead className="text-center w-1/7">Harga Premi</TableHead>
-          <TableHead className="text-center w-1/7 rounded-tr-md">
-            Aksi
-          </TableHead>
+          <TableHead className="rounded-tl-md">No Polis</TableHead>
+          <TableHead>Nama Tertanggung</TableHead>
+          <TableHead>Periode</TableHead>
+          <TableHead>Nama Item</TableHead>
+          <TableHead>Harga Pertanggungan</TableHead>
+          <TableHead>Harga Premi</TableHead>
+          <TableHead className="rounded-tr-md">Edit & Hapus</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {isLoading ? (
-          <TableRow>
-            <TableCell colSpan={7} className="text-center">
-              Loading...
-            </TableCell>
-          </TableRow>
-        ) : policies.length > 0 ? (
+        {policies.length > 0 ? (
           policies.map((policy) => (
             <TableRow key={policy.id}>
-              <TableCell className="text-center">
-                {policy.policy_number}
+              <TableCell>{policy.policy_number}</TableCell>
+              <TableCell>{policy.insured_name}</TableCell>
+              <TableCell>
+                {new Date(policy.effective_date).toLocaleDateString()} -
+                <span className="ml-1">
+                  {new Date(policy.expiry_date).toLocaleDateString()}
+                </span>
               </TableCell>
-              <TableCell className="text-center">
-                {policy.insured_name}
-              </TableCell>
-              <TableCell className="text-center">
-                {new Date(policy.effective_date).toLocaleDateString()} -{" "}
-                {new Date(policy.expiry_date).toLocaleDateString()}
-              </TableCell>
-              <TableCell className="text-center">
+              <TableCell>
                 {policy.vehicle_brand} {policy.vehicle_type}
               </TableCell>
-              <TableCell className="text-center">
+              <TableCell>
                 {parseFloat(policy.vehicle_price).toLocaleString("id-ID")}
               </TableCell>
-              <TableCell className="text-center">
+              <TableCell>
                 {parseFloat(policy.premium_price).toLocaleString("id-ID")}
               </TableCell>
               <TableCell>
@@ -99,7 +89,7 @@ const PolicyTable = ({
                     mode="edit"
                     trigger={
                       <div
-                        className="bg-[#53BF9D] text-white rounded-md p-1 cursor-pointer"
+                        className="bg-[#78D8D0] text-white rounded-md p-1 cursor-pointer"
                         onClick={() => onEditClick(policy)}
                       >
                         <Pencil className="w-5 h-5" />
@@ -111,6 +101,7 @@ const PolicyTable = ({
                     onChange={onChange}
                     onSubmit={onUpdate}
                     onCancel={onCancelEdit}
+                    onDateChange={props.onDateChange}
                   />
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
@@ -121,21 +112,20 @@ const PolicyTable = ({
                     <AlertDialogContent>
                       <AlertDialogHeader>
                         <AlertDialogTitle>
-                          Are you absolutely sure?
+                          Apakah Anda benar-benar yakin?
                         </AlertDialogTitle>
                         <AlertDialogDescription>
-                          This action cannot be undone. This will permanently
-                          delete the policy.
+                          Tindakan ini akan menghapus secara permanen.
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogCancel>Batal</AlertDialogCancel>
                         <AlertDialogAction
                           className="bg-[#F94C66] hover:bg-[#F94C66]/80 text-white"
                           onClick={() => onDelete(policy.id)}
                           disabled={isLoading}
                         >
-                          {isLoading ? "Deleting..." : "Delete"}
+                          {isLoading ? "Hapus..." : "Hapus"}
                         </AlertDialogAction>
                       </AlertDialogFooter>
                     </AlertDialogContent>
@@ -147,7 +137,7 @@ const PolicyTable = ({
         ) : (
           <TableRow>
             <TableCell colSpan={7} className="text-center">
-              No data available
+              Tidak ada data tersedia
             </TableCell>
           </TableRow>
         )}
