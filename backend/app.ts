@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 
-import router from "./src/routers/polisRouter";
+import router from "./src/routers/policyRouter";
 
 const app = express();
 

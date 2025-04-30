@@ -1,17 +1,17 @@
 import { Request, Response } from "express";
 import {
-  createPolisQuery,
-  getAllPolisQuery,
-  updatePolisQuery,
-  deletePolisQuery,
+  createPolicyQuery,
+  getAllPolicyQuery,
+  updatePolicyQuery,
+  deletePolicyQuery,
 } from "../config/query";
 
-export const createPolis = async (req: Request, res: Response) => {
+export const createPolicy = async (req: Request, res: Response) => {
   try {
-    const result = await createPolisQuery(req.body);
+    const result = await createPolicyQuery(req.body);
     res.status(200).json({
       status: "Successful",
-      message: "Successfully created polis data",
+      message: "Successfully created policy data",
       data: result,
     });
   } catch (error: any) {
@@ -22,9 +22,9 @@ export const createPolis = async (req: Request, res: Response) => {
   }
 };
 
-export const getAllPolis = async (_: Request, res: Response) => {
+export const getAllPolicy = async (_: Request, res: Response) => {
   try {
-    const result = await getAllPolisQuery();
+    const result = await getAllPolicyQuery();
     res.status(200).json({
       status: "Successful",
       data: result,
@@ -37,13 +37,13 @@ export const getAllPolis = async (_: Request, res: Response) => {
   }
 };
 
-export const updatePolis = async (req: Request, res: Response) => {
+export const updatePolicy = async (req: Request, res: Response) => {
   try {
     const id = Number(req.params.id);
-    const result = await updatePolisQuery(id, req.body);
+    const result = await updatePolicyQuery(id, req.body);
     res.status(200).json({
       status: "Successful",
-      message: "Successfully updated polis data",
+      message: "Successfully updated policy data",
       data: result,
     });
   } catch (error: any) {
@@ -54,16 +54,16 @@ export const updatePolis = async (req: Request, res: Response) => {
   }
 };
 
-export const deletePolis = async (req: Request, res: Response) => {
+export const deletePolicy = async (req: Request, res: Response) => {
   try {
     const id = Number(req.params.id);
-    await deletePolisQuery(id);
+    await deletePolicyQuery(id);
     res.status(200).json({
       status: "Successful",
-      message: `Polis with ID ${id} deleted`,
+      message: `Policy with ID ${id} deleted`,
     });
   } catch (error: any) {
-    console.error("Delete Polis Error:", error);
+    console.error("Delete Policy Error:", error);
     res.status(400).json({
       status: "Error",
       message: error.message,

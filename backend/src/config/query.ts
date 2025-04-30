@@ -1,7 +1,7 @@
 import { db } from "./database";
-import { IPolisInput } from "../utils/type";
+import { IPolicyInput } from "../utils/type";
 
-export const createPolisQuery = async (input: IPolisInput) => {
+export const createPolicyQuery = async (input: IPolicyInput) => {
   const today = new Date();
   const dateFormat = today.toISOString().slice(0, 10).replace(/-/g, "");
   const premium_price = input.vehicle_price * (input.premium_rate / 100);
@@ -43,12 +43,12 @@ export const createPolisQuery = async (input: IPolisInput) => {
   return result;
 };
 
-export const getAllPolisQuery = async () => {
+export const getAllPolicyQuery = async () => {
   const result = await db.any("SELECT * FROM policies ORDER BY id DESC");
   return result;
 };
 
-export const updatePolisQuery = async (id: number, input: IPolisInput) => {
+export const updatePolicyQuery = async (id: number, input: IPolicyInput) => {
   const premium_price = input.vehicle_price * (input.premium_rate / 100);
 
   await db.none(
@@ -81,7 +81,7 @@ export const updatePolisQuery = async (id: number, input: IPolisInput) => {
   return updated;
 };
 
-export const deletePolisQuery = async (id: number) => {
+export const deletePolicyQuery = async (id: number) => {
   await db.none("DELETE FROM policies WHERE id = $1", [id]);
   return { id };
 };
