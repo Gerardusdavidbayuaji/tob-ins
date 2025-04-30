@@ -44,7 +44,7 @@ const Dashboard = () => {
 
       toast.success("Polis berhasil dibuat");
     } catch {
-      toast.warning("Upss, something went wrong");
+      toast.warning("Upss, tidak berhasil dibuat");
     } finally {
       setIsLoading(false);
     }

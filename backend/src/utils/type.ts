@@ -1,4 +1,4 @@
-export interface IPolisInput {
+export interface IPolicyInput {
   insured_name: string;
   effective_date: string;
   expiry_date: string;

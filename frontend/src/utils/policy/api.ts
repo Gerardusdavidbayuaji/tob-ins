@@ -3,7 +3,7 @@ import { IPolicy } from ".";
 
 export const getPolicy = async (): Promise<IPolicy[]> => {
   try {
-    const response = await axiosWithConfig("/all");
+    const response = await axiosWithConfig.get("/policies");
     return response.data.data;
   } catch (error: any) {
     throw Error(error.response.data.message);
@@ -14,19 +14,19 @@ export const createPolicy = async (
   data: Omit<IPolicy, "id" | "policy_number">
 ) => {
   try {
-    const response = await axiosWithConfig.post("/create", data);
+    const response = await axiosWithConfig.post("/policies", data);
     return response.data;
   } catch (error: any) {
-    throw Error(error.response?.data?.message || "Failed to create policy");
+    throw Error(error.response?.data?.message);
   }
 };
 
 export const updatePolicy = async (id: number, data: Partial<IPolicy>) => {
   try {
-    const response = await axiosWithConfig.put(`/update/${id}`, data);
+    const response = await axiosWithConfig.put(`/policies/${id}`, data);
     return response.data;
   } catch (error: any) {
-    throw Error(error.response?.data?.message || "Failed to update policy");
+    throw Error(error.response?.data?.message);
   }
 };
 
@@ -35,6 +35,6 @@ export const deletePolicy = async (id: number) => {
     const response = await axiosWithConfig.delete(`/delete/${id}`);
     return response.data;
   } catch (error: any) {
-    throw Error(error.response?.data?.message || "Failed to delete policy");
+    throw Error(error.response?.data?.message);
   }
 };
