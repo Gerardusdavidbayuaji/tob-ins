@@ -1,11 +1,12 @@
 import express from "express";
+import router from "./src/routers/polisRouter";
 
 const app = express();
 
-app.get("/", (req, res) => {
-  res.send("TESSTTTdddxxxdd");
-});
+app.use(express.json());
+app.use("/api", router);
 
-app.listen(3000, () => {
-  console.log("Running on 3000");
+const PORT = 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
