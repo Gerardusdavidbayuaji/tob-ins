@@ -32,7 +32,7 @@ export const updatePolicy = async (id: number, data: Partial<IPolicy>) => {
 
 export const deletePolicy = async (id: number) => {
   try {
-    const response = await axiosWithConfig.delete(`/delete/${id}`);
+    const response = await axiosWithConfig.delete(`/policies/${id}`);
     return response.data;
   } catch (error: any) {
     throw Error(error.response?.data?.message);
