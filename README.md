@@ -7,4 +7,4 @@ Check out the live demo here:
 
 Frontend: [check in here](frontend/src)
 
-Frontend: [check in here](backend/src)
+Backend: [check in here](backend/src)
